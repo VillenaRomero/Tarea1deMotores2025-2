@@ -3,8 +3,8 @@
 public class MovePlayer : MonoBehaviour
 {
     public float speed = 5f;
-    public Sprite newSprite;             
-    public Color newColor = Color.red;   
+    public Sprite newSprite;
+    public Color newColor = Color.red;
 
     private SpriteRenderer sr;
     private Vector3 moveDirection;
@@ -16,10 +16,10 @@ public class MovePlayer : MonoBehaviour
 
     void Update()
     {
-        float moveY = Input.GetAxisRaw("Vertical");   
-        float moveX = Input.GetAxisRaw("Horizontal"); 
+        float moveY = Input.GetAxisRaw("Vertical");
+        float moveX = Input.GetAxisRaw("Horizontal");
 
-        moveDirection = new Vector3(moveX, moveY, 0).normalized;
+        moveDirection = new Vector3(moveX, moveY, 0);
 
         transform.position += moveDirection * speed * Time.deltaTime;
 
@@ -33,8 +33,22 @@ public class MovePlayer : MonoBehaviour
                 GameObject obj = hit.collider.gameObject;
 
                 Debug.Log("Nombre: " + obj.name);
-                Debug.Log("Posición: " + obj.transform.position);
 
+                Vector3 pos = obj.transform.position;
+                Debug.Log("Posición -> X: " + pos.x + " | Y: " + pos.y + " | Z: " + pos.z);
+
+                Debug.Log("Tag: " + obj.tag);
+
+                SpriteRenderer objSr = obj.GetComponent<SpriteRenderer>();
+
+                if (obj.CompareTag("ColorChanger") && objSr != null)
+                {
+                    Debug.Log("Color del objeto: " + objSr.color);
+                }
+                else if (obj.CompareTag("SpriteChanger") && objSr != null)
+                {
+                    Debug.Log("Sprite del objeto: " + objSr.sprite.name);
+                }
             }
         }
     }
@@ -46,11 +60,11 @@ public class MovePlayer : MonoBehaviour
             SpriteRenderer objSr = collision.gameObject.GetComponent<SpriteRenderer>();
             if (objSr != null)
             {
-                sr.color = objSr.color; 
+                sr.color = objSr.color;
             }
             else
             {
-                sr.color = newColor; 
+                sr.color = newColor;
             }
         }
 
@@ -59,7 +73,7 @@ public class MovePlayer : MonoBehaviour
             SpriteRenderer objSr = collision.gameObject.GetComponent<SpriteRenderer>();
             if (objSr != null)
             {
-                sr.sprite = objSr.sprite; 
+                sr.sprite = objSr.sprite;
             }
             else
             {
